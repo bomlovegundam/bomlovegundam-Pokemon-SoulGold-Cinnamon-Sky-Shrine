@@ -1,0 +1,27 @@
+name: Static Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Python syntax
+        run: python -m py_compile tools/validate_rom.py
+
+      - name: Check project structure
+        run: |
+          test -f README.md
+          test -f AGENTS.md
+          test -f CHANGELOG.md
+          test -f docs/ROM_BASELINE.md
+          test -f docs/SKY_SHRINE_MAP.md
+          test -f tools/validate_rom.py
